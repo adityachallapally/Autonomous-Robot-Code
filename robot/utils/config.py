@@ -30,16 +30,19 @@ __logger = logging.getLogger(__name__)
 
 CONFIG = {
     "wheel_radius":5,
-    "wheel_base":10}
+    "wheel_base":10,
+    "fps":20
+}
 
 def init(files=list()):
     config = ConfigParser.SafeConfigParser(defaults=CONFIG)
 
-    for f in config.read(['robopi.cfg', os.path.expanduser('~/.robopi.cfg')].append(files)):
+    for f in config.read(['robopi.cfg', os.path.expanduser('~/.robopi.cfg')]):
         __logger.debug("Loaded config from {0}".format(f))
 
     try:
         CONFIG['wheel_radius'] = config.getfloat("physics", "wheel_radius")
         CONFIG['wheel_base'] = config.getfloat("physics", "wheel_base")
+        CONFIG["fps"] = config.getint("operations", "fps")
     except ConfigParser.Error:
         __logger.warning("Error when loading configuration")

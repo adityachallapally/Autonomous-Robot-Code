@@ -22,27 +22,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from twisted.internet import task
+from twisted.internet import reactor
+
 from robot.control.controller import Robot
 
 import robot.utils.config as config
+from robot.utils.fps import FPS
 
 class App(object):
     def __init__(self):
-        self._running = False
         self._controller = Robot()
+        self._mainLoop = None
+        self._uiLoop = None
+        self._inputLoop = None
 
     def setup(self, argv):
         config.init()
         self._controller.setup()
 
+        self._mainLoop = task.LoopingCall(self._stepController)
+        self._uiLoop = task.LoopingCall(self._stepUI)
+        self._inputLoop = task.LoopingCall(self._stepInput)
+
     def run(self):
-        self._running = True
 
-        while self._running:
-            self._step()
+        self._mainLoop.start(1.0 / config.CONFIG.get("fps", 20), now=True)
+        self._uiLoop.start(1.0 / config.CONFIG.get("fps_ui", 20), now=True)
+        self._inputLoop.start(1.0 / config.CONFIG.get("fps_input", 20), now=True)
 
-    def _step(self):
+        self._uiLoop
+
+        # Start the loop
+        reactor.run()
+
+    def _stepController(self):
         self._controller.update()
+
+    def _stepUI(self):
+        pass
+
+    def _stepInput(self):
+        pass
 
     def purge(self):
         self._controller.purge()

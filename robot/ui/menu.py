@@ -54,8 +54,12 @@ class MenuEntry(object):
         self._parent = value
 
     @property
-    def Display(self):
+    def Name(self):
         raise NotImplementedError("Implement this")
+
+    @property
+    def Display(self):
+        return self.Name
 
     def append(self, child):
         self._children.append(child)
@@ -106,6 +110,13 @@ class Menu(object):
         self._select.OnClick -= self._onSelect
         self._up.OnClick -= self._onUp
         self._down.OnClick -= self._onDown
+
+    def add(self, path, entry):
+        """
+        Adds a menu entry at the given path
+        Path should be of the format /a/b/c
+        """
+        pass
 
     def _onBack(self, sender):
         if self._selected:

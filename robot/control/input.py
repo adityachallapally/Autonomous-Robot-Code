@@ -21,35 +21,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import sys
-
-from robot.application import App
-
-# class DebugMenu(menu.MenuEntry):
-#     def Display(self):
-#         return "Debug"
-#
-# class DebugLog(menu.MenuEntry):
-#     def Display(self):
-#         return "Log Level"
-#
-# class FrameDisplay(menu.MenuEntry):
-#     def __init__(self, fps):
-#         self._fps = fps
-#
-#     def Display(self):
-#         return "Frame Time\n{0:4.2} ms".format(self._fps.duration*1000)
-#
-# class RobotMenu(menu.MenuEntry):
-#     def Display(self):
-#         return "Root"
-
-def main(args):
-    app = App()
-
-    app.setup(args)
-    app.run()
-
-if __name__=='__main__':
-    main(sys.argv)
