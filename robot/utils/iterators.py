@@ -40,7 +40,7 @@ class BiCircular(object):
         self._index += inc
 
         if self._index < 0:
-            self._index = len(self._enum)
-        elif self._index > len(self._enum):
+            self._index = len(self._enum) - 1
+        elif self._index >= len(self._enum):
             self._index = 0
 

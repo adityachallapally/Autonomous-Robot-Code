@@ -21,3 +21,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+import ConfigParser
+import logging
+import os.path
+
+__logger = logging.getLogger(__name__)
+
+CONFIG = {
+    "wheel_radius":5,
+    "wheel_base":10}
+
+def init(files=list()):
+    config = ConfigParser.SafeConfigParser(defaults=CONFIG)
+
+    for f in config.read(['robopi.cfg', os.path.expanduser('~/.robopi.cfg')].append(files)):
+        __logger.debug("Loaded config from {0}".format(f))
+
+    try:
+        CONFIG['wheel_radius'] = config.getfloat("physics", "wheel_radius")
+        CONFIG['wheel_base'] = config.getfloat("physics", "wheel_base")
+    except ConfigParser.Error:
+        __logger.warning("Error when loading configuration")

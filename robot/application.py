@@ -21,3 +21,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+from robot.control.controller import Robot
+
+import robot.utils.config as config
+
+class App(object):
+    def __init__(self):
+        self._running = False
+        self._controller = Robot()
+
+    def setup(self, argv):
+        config.init()
+        self._controller.setup()
+
+    def run(self):
+        self._running = True
+
+        while self._running:
+            self._step()
+
+    def _step(self):
+        self._controller.update()
+
+    def purge(self):
+        self._controller.purge()

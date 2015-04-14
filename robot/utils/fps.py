@@ -21,3 +21,36 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+import time
+
+class FPS(object):
+    def __init__(self, fps):
+        self._fps = fps
+        self._frame_time = 1 / fps
+        self._start = 0
+        self._end = 0
+        self._duration = 0
+
+    def __str__(self):
+        return str(self._duration)
+
+    @property
+    def duration(self):
+        return self._duration
+
+    def begin(self):
+        """
+        Open the frame
+        :return:
+        """
+        self._start = time.time()
+
+    def end(self):
+        """
+        Close the frame and sleep to match the target frame rate
+        :return:
+        """
+        self._end = time.time()
+        self._duration = self._end - self._start
+        time.sleep(max(0, self._frame_time - self._duration))
