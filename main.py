@@ -23,29 +23,24 @@
 # SOFTWARE.
 
 import sys
+import logging
 
 from robot.application import App
+import robot.utils.config as config
 
-# class DebugMenu(menu.MenuEntry):
-#     def Display(self):
-#         return "Debug"
-#
-# class DebugLog(menu.MenuEntry):
-#     def Display(self):
-#         return "Log Level"
-#
-# class FrameDisplay(menu.MenuEntry):
-#     def __init__(self, fps):
-#         self._fps = fps
-#
-#     def Display(self):
-#         return "Frame Time\n{0:4.2} ms".format(self._fps.duration*1000)
-#
-# class RobotMenu(menu.MenuEntry):
-#     def Display(self):
-#         return "Root"
+def setupLogging(args):
+    pass
 
 def main(args):
+    """
+    Entry point for the application
+    Takes a list of command line arguments as parameter
+    :param args:
+    :return:
+    """
+    config.init()
+    setupLogging(args)
+
     app = App()
 
     app.setup(args)

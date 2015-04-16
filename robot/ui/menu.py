@@ -31,14 +31,35 @@ BUTTON_UP = 2
 BUTTON_DOWN = 3
 
 class MenuEntry(object):
-    def __init__(self):
+    def __init__(self, name):
+        self._name = name
         self._parent = None
         self._children = list()
         self._current = None
         self._bc = iterators.BiCircular(self._children)
 
+    def __getitem__(self, name):
+        """
+        Returns the item with the given name
+        If missing, a new item with the given name is created
+        """
+        try:
+            return next((x for x in self._children if x.Name == name))
+        except StopIteration:
+            return self.append(MenuEntry(name))
+
+
+    def __repr__(self):
+        return "MenuEntry ({0})".format( self.Name)
+
+    def __str__(self):
+        return self.Name
+
     @property
     def Current(self):
+        if(self._current is None and len(self._children) > 0):
+            self._current = self._children[0]
+
         return self._current
 
     @property
@@ -55,7 +76,7 @@ class MenuEntry(object):
 
     @property
     def Name(self):
-        raise NotImplementedError("Implement this")
+        return self._name
 
     @property
     def Display(self):
@@ -64,9 +85,6 @@ class MenuEntry(object):
     def append(self, child):
         self._children.append(child)
         child.Parent = self
-
-        if len(self._children) == 1:
-            self._current = child
 
         return child
 
@@ -85,7 +103,7 @@ class MenuEntry(object):
 
 
 class Menu(object):
-    def __init__(self, root):
+    def __init__(self):
         # Create all buttons and register to their respective Pi pins
         self._back = button.UIButtonBehaviour(button.Button(26))
         self._select = button.UIButtonBehaviour(button.Button(21))
@@ -100,8 +118,9 @@ class Menu(object):
         self._up.OnClick += self._onUp
         self._down.OnClick += self._onDown
 
-        self._current = root
-        self._display = root.Current
+        self._root = MenuEntry("Root")
+        self._current = self._root
+        self._display = None
         self._selected = None
 
     def __del__(self):
@@ -116,7 +135,18 @@ class Menu(object):
         Adds a menu entry at the given path
         Path should be of the format /a/b/c
         """
-        pass
+        names = path.split("/")
+        current = self._root
+
+
+        for name in names:
+            current = current[name]
+
+        current.append(entry)
+
+        if(self._display == None):
+            self._display = self._current.Current
+
 
     def _onBack(self, sender):
         if self._selected:
@@ -152,9 +182,9 @@ class Menu(object):
 
     def render(self):
         if self._selected:
-            return "* {0}".format(self._selected.Display())
+            return "* {0}".format(self._selected.Display)
         elif self._display:
-            return self._display.Display()
+            return self._display.Display
         else:
             return ""
 

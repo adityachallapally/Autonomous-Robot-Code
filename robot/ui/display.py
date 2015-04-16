@@ -43,7 +43,6 @@ __lcd = LCD.Adafruit_CharLCD(__lcd_rs, __lcd_en, __lcd_d4, __lcd_d5, __lcd_d6, _
 
 __currentTarget = None
 __currentBuffer = ""
-__last_update = 0
 
 def current(current):
     global __currentTarget
@@ -51,14 +50,11 @@ def current(current):
 
 def update():
     global __currentBuffer
-    global __last_update
 
     if __currentTarget:
-        if (time.time() - __last_update) > 0.4:
-            __last_update = time.time()
-
             r = __currentTarget.render()
             if r != __currentBuffer:
+
                 __currentBuffer = r
                 __lcd.clear()
                 __lcd.message(__currentTarget.render())
