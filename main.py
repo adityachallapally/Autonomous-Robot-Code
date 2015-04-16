@@ -27,9 +27,24 @@ import logging
 
 from robot.application import App
 import robot.utils.config as config
+from twisted.python import log
+
+__logger = logging.getLogger(__name__)
 
 def setupLogging(args):
-    pass
+    # Connect the twisted log with the python log
+    observer = log.PythonLoggingObserver()
+    observer.start()
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # Create main stream handler
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    ch.setFormatter(formatter)
+
+    logging.getLogger('').addHandler(ch)
+
 
 def main(args):
     """
@@ -38,8 +53,8 @@ def main(args):
     :param args:
     :return:
     """
-    config.init()
     setupLogging(args)
+    config.init()
 
     app = App()
 
