@@ -1,6 +1,14 @@
 # RoboPi
 Robot controller code running on the Raspberry Pi
 
+## About
+This is a personal hobby project implementing a robot controller in python to run on the Raspberry Pi.
+
+I started the project to learn more about physical computing and to apply my knowledge on something that 
+really interest me, creating autonomous real world interacting robots.
+
+Feel free to comment on the project or use parts of it according to the project license.
+
 ## License
 The MIT License (MIT)
 
