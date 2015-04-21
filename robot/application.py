@@ -69,6 +69,11 @@ class App(object):
         # Start the loop
         reactor.run()
 
+    def purge(self):
+        self._controller.purge()
+        display.purge()
+        reactor.stop()
+
     def _stepController(self):
         self._controller.update()
 
@@ -79,7 +84,3 @@ class App(object):
 
     def _stepInput(self):
         pass
-
-    def purge(self):
-        self._controller.purge()
-        display.purge()

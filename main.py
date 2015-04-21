@@ -24,6 +24,7 @@
 
 import sys
 import logging
+import signal
 
 from robot.application import App
 import robot.utils.config as config
@@ -51,15 +52,24 @@ def main(args):
     Entry point for the application
     Takes a list of command line arguments as parameter
     :param args:
-    :return:
+    :return: return code
     """
     setupLogging(args)
     config.init()
 
     app = App()
 
+    def SIGINT_handler(num, frame):
+        __logger.info("Signal handler triggered, purging application")
+        app.purge()
+
+    signal.signal(signal.SIGINT, SIGINT_handler)
+    signal.signal(signal.SIGHUP, SIGINT_handler)
+
     app.setup(args)
     app.run()
+
+
 
 if __name__=='__main__':
     main(sys.argv)
