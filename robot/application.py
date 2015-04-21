@@ -32,6 +32,7 @@ from robot.control.controller import Robot
 import robot.utils.config as config
 from robot.utils.fps import FPS
 from robot.ui.menu import MenuEntry, Menu
+from robot.control.input import input
 import robot.ui.display as display
 
 
@@ -53,8 +54,6 @@ class App(object):
         GPIO.setmode(GPIO.BCM)
 
         self._menu = Menu()
-        self._menu.add("Top/Debug/Logging", MenuEntry("cool"))
-
         display.current(self._menu)
 
 
@@ -81,6 +80,6 @@ class App(object):
         self._menu.update()
         display.update()
 
-
     def _stepInput(self):
-        pass
+        input.update()
+

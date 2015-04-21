@@ -21,3 +21,30 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+__all__ = ['input', 'IInput']
+
+class IInput(object):
+    @property
+    def Name(self):
+        raise NotImplementedError("Implement this")
+
+    def update(self):
+        raise NotImplementedError("Implement this")
+
+
+class InputManager(object):
+    def __init__(self):
+        self._inputs = list()
+        self._data = dict()
+
+    def update(self):
+        self._data = {x.Name : x.update() for x in self._inputs}
+
+    def add(self, input):
+        self._inputs.append(input)
+
+    def __getitem__(self, item):
+        return self._data[item]
+
+input = InputManager()
